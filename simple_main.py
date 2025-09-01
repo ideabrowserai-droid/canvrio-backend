@@ -27,7 +27,7 @@ from bs4 import BeautifulSoup
 import feedparser
 import time
 import hashlib
-from ddgs import DDGS
+from duckduckgo_search import DDGS
 
 # Load environment variables from .env file if it exists
 load_dotenv()
@@ -73,8 +73,10 @@ def get_curator_credentials(credentials: HTTPBasicCredentials = Depends(security
         )
     return credentials.username
 
-# Mount static files for logos and assets
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Mount static files for logos and assets (only if directory exists)
+import os
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

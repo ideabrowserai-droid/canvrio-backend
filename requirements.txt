@@ -18,3 +18,7 @@ schedule==1.2.0 # Task scheduling for automated updates
 
 # AI Debugging Dependencies
 anthropic==0.40.0 # Claude API client for AI debugging
+
+# Search Dependencies
+duckduckgo_search>=3.8.5 # DuckDuckGo search API
+python-dateutil>=2.8.2 # Date parsing for search results

@@ -1,0 +1,60 @@
+{
+  "name": "canvrio-backend",
+  "version": "1.0.0",
+  "description": "Canvrio Backend - AI clarity for cannabis retail and operations",
+  "main": "simple_main.py",
+  "scripts": {
+    "ecosystem:analyze": "python analyze_ecosystem.py",
+    "ecosystem:watch": "python ecosystem_watcher.py",
+    "ecosystem:watch:once": "python ecosystem_watcher.py --run-once",
+    "ecosystem:count": "python analyze_ecosystem.py --count",
+    "ecosystem:version:create": "python ecosystem_version_manager.py create",
+    "ecosystem:version:list": "python ecosystem_version_manager.py list",
+    "ecosystem:version:cleanup": "python ecosystem_version_manager.py cleanup",
+    "start": "python simple_main.py",
+    "start:scheduler": "python content_scheduler.py",
+    "dev": "uvicorn simple_main:app --reload --host 0.0.0.0 --port 8000",
+    "test": "echo \"No tests specified yet\" && exit 0"
+  },
+  "keywords": [
+    "cannabis",
+    "compliance",
+    "intelligence",
+    "fastapi",
+    "content-aggregation"
+  ],
+  "author": "Canvrio Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "engines": {
+    "python": ">=3.12"
+  },
+  "ecosystem-scripts": {
+    "description": "Ecosystem Ideas Management Scripts",
+    "commands": {
+      "npm run ecosystem:analyze": "Run full ecosystem ideas analysis with Claude Code research-agent",
+      "npm run ecosystem:watch": "Start watching ecosystem folder for changes (continuous monitoring)",
+      "npm run ecosystem:watch:once": "Run analysis once without continuous watching",
+      "npm run ecosystem:count": "Count number of idea files in ecosystem folder",
+      "npm run ecosystem:version:create": "Create a new version of the current analysis",
+      "npm run ecosystem:version:list": "List all versions of ecosystem analysis",
+      "npm run ecosystem:version:cleanup": "Remove old versions (keeps latest 10)"
+    },
+    "workflow": [
+      "1. Add new idea files to Research/Ecosystem Ideas/",
+      "2. Run 'npm run ecosystem:analyze' to generate prioritized analysis",
+      "3. Or start 'npm run ecosystem:watch' for automatic updates",
+      "4. Use version commands to manage analysis history"
+    ],
+    "files": {
+      "analyze_ecosystem.py": "Main analysis script using Claude Code research-agent",
+      "ecosystem_watcher.py": "File watcher for automatic analysis on changes", 
+      "ecosystem_version_manager.py": "Version control for analysis files",
+      "Research/ecosystem-ideas-prioritized.md": "Generated prioritized analysis (main output)",
+      "Research/ecosystem-versions/": "Version history storage"
+    }
+  }
+}
