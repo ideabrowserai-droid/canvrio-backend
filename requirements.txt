@@ -1,0 +1,20 @@
+# Core API & Database
+fastapi>=0.104.1,<0.115.0 # Updated range for better stability
+uvicorn[standard]==0.24.0
+sqlalchemy==2.0.23
+# Pydantic v2.x compatible with Python 3.13
+pydantic[email]>=2.7.0,<3.0.0 # Updated to a version known to work better with Python 3.13
+python-multipart==0.0.6
+python-dotenv==1.0.0
+# psycopg2-binary==2.9.9 # Commented out due to installation issues on Windows. Uncomment and install later if/when deploying with PostgreSQL.
+
+# Content Aggregation Dependencies
+praw==7.7.1 # Reddit API wrapper
+requests==2.31.0 # HTTP requests for web scraping
+beautifulsoup4==4.12.2 # HTML parsing for web scraping
+feedparser>=6.0.2,<7.0.0 # RSS feed parsing (Updated for Python 3.13 compatibility)
+schedule==1.2.0 # Task scheduling for automated updates
+
+
+# AI Debugging Dependencies
+anthropic==0.40.0 # Claude API client for AI debugging

@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+venv312/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# Development files
+*.log
+claude_debug.log
+content_scheduler.log
+
+# Temporary files
+.temp_*
+*temp*
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development databases (we'll include production databases)
+# content backup.db
+
+# Backup files
+*backup*
+*Backup*
+
+# Documentation and notes
+docs/
+*.md
+# Keep requirements.txt but ignore other txt files
+*.txt
+!requirements.txt
+Journal/
+Research/
+Social Media/
+social-media/
+Rebrand/
+Standalone/
+Micro SAAS/
+cannabis_websites/
+perplexity_mcp/
+
+# Frontend files (separate repo)
+*.html
+static/
+canvrio*.png
