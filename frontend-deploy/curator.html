@@ -172,12 +172,12 @@
                 setTimeout(() => { statusMessage.style.display = 'none'; }, 4000);
             };
 
-            const determineVisibility = (publishedDate) => {
+            const determineVisibility = (createdAt) => {
                 const now = new Date();
-                const published = new Date(publishedDate);
-                const hoursDiff = (now - published) / (1000 * 60 * 60);
+                const created = new Date(createdAt);
+                const hoursDiff = (now - created) / (1000 * 60 * 60);
                 
-                // If published within 7 days, will appear in "Latest Intelligence" 
+                // If added to system within 7 days, will appear in "Latest Intelligence" 
                 // Otherwise, will appear in "Canvrio's Picks" when approved
                 if (hoursDiff <= 168) { // 7 days = 168 hours
                     return {
@@ -263,9 +263,9 @@
                     let message = 'No content matches the current filters.';
                     
                     if (sectionValue === 'picks') {
-                        message = 'No pending content older than 7 days found. Most content becomes available for "Canvrio\'s Picks" section after being published for more than 7 days. Try the "Latest Intelligence" filter or "All Sections" to see available content.';
+                        message = 'No content added to system more than 7 days ago found. Most content becomes available for "Canvrio\'s Picks" section after being in system for more than 7 days. Try the "Latest Intelligence" filter or "All Sections" to see available content.';
                     } else if (sectionValue === 'latest') {
-                        message = 'No recent pending content (within 7 days) found. Try "All Sections" or refresh content to fetch newer items.';
+                        message = 'No recently added content (within 7 days) found. Try "All Sections" or refresh content to fetch newer items.';
                     }
                     
                     contentList.innerHTML = `<li><p style="background-color: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107; color: #856404;">${message}</p></li>`;
@@ -273,7 +273,7 @@
                 }
                 
                 content.forEach(item => {
-                    const visibility = determineVisibility(item.published_date);
+                    const visibility = determineVisibility(item.created_at);
                     const publishedTime = formatPublishedDate(item.published_date);
                     
                     const li = document.createElement('li');
@@ -340,11 +340,11 @@
                 if (sectionValue !== 'all') {
                     filtered = filtered.filter(item => {
                         const now = new Date();
-                        const published = new Date(item.published_date);
-                        const hoursDiff = (now - published) / (1000 * 60 * 60);
+                        const created = new Date(item.created_at);
+                        const hoursDiff = (now - created) / (1000 * 60 * 60);
                         
-                        if (sectionValue === 'latest') return hoursDiff <= 168; // 7 days
-                        if (sectionValue === 'picks') return hoursDiff > 168; // older than 7 days
+                        if (sectionValue === 'latest') return hoursDiff <= 168; // 7 days since added
+                        if (sectionValue === 'picks') return hoursDiff > 168; // older than 7 days since added
                         return true;
                     });
                 }
