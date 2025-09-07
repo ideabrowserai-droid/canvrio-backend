@@ -699,20 +699,20 @@ async def refresh_content(background_tasks: BackgroundTasks, request: Request):
 
 @app.get("/api/content/latest")
 async def get_latest_content_api(request: Request, limit: int = 20):
-    """Get latest intelligence - recently approved content sorted by approval timestamp"""
+    """Get latest intelligence - recently discovered content (added to system within 7 days)"""
     try:
         conn = sqlite3.connect(aggregator.db_path)
         conn.execute('PRAGMA journal_mode=WAL;')
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # Get recently approved content (within last 7 days) with custom priority sorting
+        # Get recently discovered content (added within last 7 days) with custom priority sorting
         cursor.execute('''
             SELECT id, title, content, source, category, url, published_date, created_at, approval_timestamp, priority
             FROM content_feeds 
             WHERE is_active = 1 AND compliance_status = 'approved'
-            AND approval_timestamp IS NOT NULL
-            AND datetime(approval_timestamp) >= datetime('now', '-7 days')
+            AND approval_timestamp IS NOT NULL  
+            AND datetime(created_at) >= datetime('now', '-7 days')
             ORDER BY 
                 CASE priority
                     WHEN 1 THEN 1  -- Breaking first
@@ -774,20 +774,20 @@ async def get_banner_preview():
 
 @app.get("/api/content/canvrio-picks")
 async def get_canvrio_picks(limit: int = 5):
-    """Get Canvrio's Picks - recently approved content sorted by approval_timestamp"""
+    """Get Canvrio's Picks - older discovered content (added to system more than 7 days ago)"""
     try:
         conn = sqlite3.connect(aggregator.db_path)
         conn.execute('PRAGMA journal_mode=WAL;')
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # Get content published more than 48 hours ago (Canvrio's Picks) with custom priority sorting
+        # Get content added to system more than 7 days ago (Canvrio's Picks) with custom priority sorting  
         cursor.execute('''
             SELECT id, title, content, source, category, url, published_date, created_at, approval_timestamp, priority
             FROM content_feeds 
             WHERE is_active = 1 AND compliance_status = 'approved' 
             AND approval_timestamp IS NOT NULL
-            AND datetime(published_date) < datetime('now', '-48 hours')
+            AND datetime(created_at) < datetime('now', '-7 days')
             ORDER BY 
                 CASE priority
                     WHEN 1 THEN 1  -- Breaking first
