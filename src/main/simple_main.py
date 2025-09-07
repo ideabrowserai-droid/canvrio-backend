@@ -596,34 +596,34 @@ aggregator = ContentAggregator()
 
 # --- Static Pages & Health Check ---
 @app.get("/")
-async def serve_website(): return FileResponse("index.html")
+async def serve_website(): return FileResponse("frontend-deploy/index.html")
 
 @app.get("/about")
-async def serve_about(): return FileResponse("about.html")
+async def serve_about(): return FileResponse("frontend-deploy/about.html")
 
 @app.get("/contact")
-async def serve_contact(): return FileResponse("contact.html")
+async def serve_contact(): return FileResponse("frontend-deploy/contact.html")
 
 @app.get("/market-analysis")
-async def serve_market_analysis(): return FileResponse("market-analysis.html")
+async def serve_market_analysis(): return FileResponse("frontend-deploy/market-analysis.html")
 
 @app.get("/website-intelligence")
-async def serve_website_intelligence(): return FileResponse("website-intelligence.html")
+async def serve_website_intelligence(): return FileResponse("frontend-deploy/website-intelligence.html")
 
 @app.get("/health")
 async def health_check(): return {"status": "healthy"}
 
 @app.get("/intelligence-hub")
-async def serve_intelligence_hub(): return FileResponse("intelligence-hub.html")
+async def serve_intelligence_hub(): return FileResponse("frontend-deploy/intelligence-hub.html")
 
 @app.get("/compliance-analysis")
-async def serve_compliance_analysis(): return FileResponse("compliance-analysis.html")
+async def serve_compliance_analysis(): return FileResponse("frontend-deploy/compliance-analysis.html")
 
 @app.get("/pricing-analysis")
-async def serve_pricing_analysis(): return FileResponse("pricing-analysis.html")
+async def serve_pricing_analysis(): return FileResponse("frontend-deploy/pricing-analysis.html")
 
 @app.get("/international-expansion")
-async def serve_international_expansion(): return FileResponse("international-expansion.html")
+async def serve_international_expansion(): return FileResponse("frontend-deploy/international-expansion.html")
 
 # Catch-all route for HTML files
 @app.get("/{filename}.html")
@@ -639,13 +639,13 @@ async def serve_html_files(filename: str):
 @app.get("/curator")
 async def serve_curator_interface(username: str = Depends(get_curator_credentials)):
     """Serves the integrated content curation HTML page (password protected)."""
-    return FileResponse("curator.html")
+    return FileResponse("frontend-deploy/curator.html")
 
 # --- Blog Admin Interface Endpoint ---
 @app.get("/blog-admin")
 async def serve_blog_admin_interface():
     """Serves the CannTech blog administration HTML page."""
-    return FileResponse("blog-admin.html")
+    return FileResponse("frontend-deploy/blog-admin.html")
 
 # --- Newsletter API Endpoints ---
 @app.post("/api/newsletter/subscribe")
