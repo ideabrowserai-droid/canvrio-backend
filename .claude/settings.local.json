@@ -14,7 +14,8 @@
       "Bash(tasklist:*)",
       "Bash(start:*)",
       "Bash(dir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": [],

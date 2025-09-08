@@ -51,10 +51,13 @@
     ],
     "files": {
       "analyze_ecosystem.py": "Main analysis script using Claude Code research-agent",
-      "ecosystem_watcher.py": "File watcher for automatic analysis on changes", 
+      "ecosystem_watcher.py": "File watcher for automatic analysis on changes",
       "ecosystem_version_manager.py": "Version control for analysis files",
       "Research/ecosystem-ideas-prioritized.md": "Generated prioritized analysis (main output)",
       "Research/ecosystem-versions/": "Version history storage"
     }
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.106"
   }
 }

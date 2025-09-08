@@ -75,7 +75,10 @@ def get_curator_credentials(credentials: HTTPBasicCredentials = Depends(security
 
 # Mount static files for logos and assets (only if directory exists)
 import os
-if os.path.exists("static"):
+static_path = os.path.join(os.path.dirname(__file__), "..", "..", "static")
+if os.path.exists(static_path):
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
+elif os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configure logging
@@ -596,7 +599,11 @@ aggregator = ContentAggregator()
 
 # --- Static Pages & Health Check ---
 @app.get("/")
-async def serve_website(): return FileResponse("frontend-deploy/index.html")
+async def serve_website(): 
+    frontend_path = os.path.join(os.path.dirname(__file__), "..", "..", "frontend-deploy", "index.html")
+    if os.path.exists(frontend_path):
+        return FileResponse(frontend_path)
+    return {"message": "Canvrio API is running! Frontend files not found."}
 
 @app.get("/about")
 async def serve_about(): return FileResponse("frontend-deploy/about.html")

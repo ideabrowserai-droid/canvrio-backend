@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: canvrio-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python src/main/simple_main.py
+    plan: starter
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: ANTHROPIC_API_KEY
+        sync: false  # You'll set this manually in Render dashboard
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: canvrio-disk
+      mountPath: /opt/render/project/src
+      sizeGB: 1

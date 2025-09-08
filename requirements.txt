@@ -1,24 +1,19 @@
-# Core API & Database
-fastapi>=0.104.1,<0.115.0 # Updated range for better stability
+# Core API & Database - Render Production
+fastapi==0.104.1
 uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-# Pydantic v2.x compatible with Python 3.13
-pydantic[email]>=2.7.0,<3.0.0 # Updated to a version known to work better with Python 3.13
+pydantic==2.5.0
 python-multipart==0.0.6
 python-dotenv==1.0.0
-# psycopg2-binary==2.9.9 # Commented out due to installation issues on Windows. Uncomment and install later if/when deploying with PostgreSQL.
 
 # Content Aggregation Dependencies
-praw==7.7.1 # Reddit API wrapper
-requests==2.31.0 # HTTP requests for web scraping
-beautifulsoup4==4.12.2 # HTML parsing for web scraping
-feedparser>=6.0.2,<7.0.0 # RSS feed parsing (Updated for Python 3.13 compatibility)
-schedule==1.2.0 # Task scheduling for automated updates
+requests==2.31.0
+beautifulsoup4==4.12.2
+feedparser==6.0.10
+lxml==4.9.3
 
-
-# AI Debugging Dependencies
-anthropic==0.40.0 # Claude API client for AI debugging
+# AI Debugging Dependencies  
+anthropic==0.7.7
 
 # Search Dependencies
-duckduckgo_search>=3.8.5 # DuckDuckGo search API
-python-dateutil>=2.8.2 # Date parsing for search results
+duckduckgo-search==3.9.6
+python-dateutil==2.8.2
