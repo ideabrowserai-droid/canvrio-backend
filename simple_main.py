@@ -1,4 +1,4 @@
-import feedparser
+import xml.etree.ElementTree as ET
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -24,7 +24,7 @@ from contextlib import asynccontextmanager
 # Content Aggregation - Clean single class approach
 import requests
 from bs4 import BeautifulSoup
-import feedparser
+import xml.etree.ElementTree as ET
 import time
 import hashlib
 from duckduckgo_search import DDGS
@@ -331,7 +331,7 @@ class ContentAggregator:
         return 'Industry Commentary'
     
     def fetch_rss_feeds(self) -> List[Dict]:
-        """Fetch content from RSS feeds"""
+        """Fetch content from RSS feeds using native XML parsing"""
         content = []
         rss_feeds = [
             {'url': 'https://stratcann.ca/feed', 'source': 'StratCann'},
@@ -342,24 +342,61 @@ class ContentAggregator:
         
         for feed_info in rss_feeds:
             try:
-                feed = feedparser.parse(feed_info['url'])
-                for entry in feed.entries[:5]:
+                # Fetch RSS feed
+                response = requests.get(feed_info['url'], headers=self.headers, timeout=10)
+                response.raise_for_status()
+                
+                # Parse XML
+                root = ET.fromstring(response.content)
+                
+                # Handle both RSS 2.0 and Atom feeds
+                items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
+                
+                for entry in items[:5]:
+                    # Extract title
+                    title_elem = entry.find('title') or entry.find('{http://www.w3.org/2005/Atom}title')
+                    title = title_elem.text if title_elem is not None else 'No title'
+                    title = re.sub(r'^[^a-zA-Z0-9@]+', '', title).strip()
+                    
+                    # Extract description/summary
+                    desc_elem = (entry.find('description') or 
+                               entry.find('{http://www.w3.org/2005/Atom}summary') or
+                               entry.find('{http://www.w3.org/2005/Atom}content'))
+                    summary = desc_elem.text if desc_elem is not None else ''
+                    summary = BeautifulSoup(summary, 'html.parser').get_text(strip=True)[:400]
+                    
+                    # Extract link
+                    link_elem = entry.find('link') or entry.find('{http://www.w3.org/2005/Atom}link')
+                    if link_elem is not None:
+                        url = link_elem.text or link_elem.get('href', '')
+                    else:
+                        url = ''
+                    
+                    # Extract published date
+                    pub_elem = (entry.find('pubDate') or 
+                              entry.find('{http://www.w3.org/2005/Atom}published') or
+                              entry.find('{http://www.w3.org/2005/Atom}updated'))
+                    
                     published_dt = datetime.now()
-                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                        published_dt = datetime(*entry.published_parsed[:6])
+                    if pub_elem is not None and pub_elem.text:
+                        try:
+                            # Try parsing different date formats
+                            from dateutil import parser
+                            published_dt = parser.parse(pub_elem.text)
+                            if published_dt.tzinfo:
+                                published_dt = published_dt.replace(tzinfo=None)
+                        except:
+                            published_dt = datetime.now()
                     
                     # Skip content older than 7 days to allow content aging for Canvrio's Picks
                     if published_dt < (datetime.now() - timedelta(days=7)):
                         continue
                     
-                    title = re.sub(r'^[^a-zA-Z0-9@]+', '', entry.title).strip()
-                    summary = BeautifulSoup(getattr(entry, 'summary', ''), 'html.parser').get_text(strip=True)[:400]
-                    
                     content.append({
                         'title': title,
                         'content': summary,
                         'source': feed_info['source'],
-                        'url': entry.link,
+                        'url': url,
                         'published_date': published_dt
                     })
             except Exception as e:

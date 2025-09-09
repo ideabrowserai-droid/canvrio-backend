@@ -1,4 +1,4 @@
-# Core API & Database - Render Production (No Rust compilation)
+# Core API & Database - Render Production
 fastapi==0.100.1
 uvicorn==0.23.2
 pydantic==1.10.12
@@ -8,11 +8,11 @@ python-dotenv==1.0.0
 # Content Aggregation Dependencies
 requests==2.31.0
 beautifulsoup4==4.12.2
-feedparser==6.0.10
+# REMOVED: feedparser==6.0.10
 
 # AI Debugging Dependencies  
 anthropic==0.7.7
 
-# Search Dependencies - Compatible versions for Render
+# Search Dependencies
 duckduckgo-search==3.8.5
 python-dateutil==2.8.2
