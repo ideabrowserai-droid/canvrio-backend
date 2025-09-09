@@ -1,14 +1,14 @@
 # Core API & Database - Render Production
 fastapi==0.100.1
 uvicorn==0.23.2
-pydantic==1.10.12
+pydantic==2.5.3  # UPDATED: v2 supports Python 3.13
+pydantic-settings==2.1.0  # ADD: Required for Pydantic v2
 python-multipart==0.0.6
 python-dotenv==1.0.0
 
 # Content Aggregation Dependencies
 requests==2.31.0
 beautifulsoup4==4.12.2
-# REMOVED: feedparser==6.0.10
 
 # AI Debugging Dependencies  
 anthropic==0.7.7

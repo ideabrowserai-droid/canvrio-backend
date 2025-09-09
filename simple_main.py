@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 import uvicorn
 from datetime import datetime, timedelta
 import sqlite3
@@ -157,7 +157,8 @@ class NewsletterSubscription(BaseModel):
     age_verified: bool
     data_processing_consent: bool
 
-    @validator('email')
+    @field_validator('email')
+    @classmethod
     def validate_email(cls, v):
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, v):
