@@ -197,7 +197,27 @@ def init_content_database():
     # Enable WAL mode
     cursor.execute('PRAGMA journal_mode=WAL;')
     
-    # Update existing schema to match sophisticated version
+    # Create content_feeds table if it doesn't exist
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS content_feeds (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT,
+            source TEXT NOT NULL,
+            category TEXT NOT NULL,
+            url TEXT UNIQUE NOT NULL,
+            published_date TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            approval_timestamp TIMESTAMP,
+            content_hash VARCHAR(255) UNIQUE,
+            engagement_metrics JSON,
+            compliance_status TEXT DEFAULT 'pending',
+            priority INTEGER DEFAULT 3,
+            is_active INTEGER DEFAULT 1
+        )
+    ''')
+    
+    # Add any missing columns to existing table (for backward compatibility)
     try:
         cursor.execute('ALTER TABLE content_feeds ADD COLUMN engagement_metrics JSON')
     except sqlite3.OperationalError:
@@ -207,11 +227,21 @@ def init_content_database():
         cursor.execute('ALTER TABLE content_feeds ADD COLUMN content_hash VARCHAR(255) UNIQUE')
     except sqlite3.OperationalError:
         pass  # Column already exists
+    
+    try:
+        cursor.execute('ALTER TABLE content_feeds ADD COLUMN approval_timestamp TIMESTAMP')
+    except sqlite3.OperationalError:
+        pass  # Column already exists
         
     try:
-        cursor.execute('ALTER TABLE content_feeds MODIFY COLUMN category TEXT NOT NULL')
+        cursor.execute('ALTER TABLE content_feeds ADD COLUMN priority INTEGER DEFAULT 3')
     except sqlite3.OperationalError:
-        pass  # SQLite doesn't support MODIFY, but that's ok
+        pass  # Column already exists
+        
+    try:
+        cursor.execute('ALTER TABLE content_feeds ADD COLUMN is_active INTEGER DEFAULT 1')
+    except sqlite3.OperationalError:
+        pass  # Column already exists
     
     conn.commit()
     conn.close()
