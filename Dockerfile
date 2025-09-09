@@ -14,7 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Expose the port Render expects
+# Create necessary directories
+RUN mkdir -p /app
+
+# Expose the port
 EXPOSE 10000
 
 # Run the application

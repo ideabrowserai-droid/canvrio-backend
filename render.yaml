@@ -1,17 +1,11 @@
 services:
   - type: web
     name: canvrio-backend
-    runtime: docker  # Changed to docker runtime
+    runtime: docker
     dockerfilePath: ./Dockerfile
     plan: starter
     envVars:
-      - key: PORT
-        value: 10000
       - key: ANTHROPIC_API_KEY
         sync: false
     healthCheckPath: /health
     autoDeploy: true
-    disk:
-      name: canvrio-disk
-      mountPath: /opt/render/project/src
-      sizeGB: 1
