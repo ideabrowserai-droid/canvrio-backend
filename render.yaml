@@ -3,7 +3,7 @@ services:
     name: canvrio-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python src/main/simple_main.py
+    startCommand: python simple_main.py
     plan: starter
     envVars:
       - key: PORT
