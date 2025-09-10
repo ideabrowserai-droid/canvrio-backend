@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Canvrio AI Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #ffffff;
+        }
+        
+        /* Futuristic Typography - Match homepage */
+        h1, h2, h3, .logo-text, .nav-links a {
+            font-family: 'Segoe UI', 'Roboto', 'Arial Black', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        
+        /* Color Variables */
+        :root {
+            --canvrio-blue: #004C6C;
+            --canvrio-green: #1B4D3E;
+            --canvrio-accent: #00D4AA;
+            --canvrio-light-blue: #E8F4F8;
+            --gray-100: #f7fafc;
+            --gray-200: #e2e8f0;
+            --gray-500: #718096;
+            --gray-600: #4a5568;
+            --gray-900: #1a202c;
+        }
+        
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: var(--canvrio-accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #00b894;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.3);
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 200px;
+            background: var(--canvrio-blue);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--canvrio-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--canvrio-blue);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #001f3f 0%, #004C6C 25%, #1B4D3E 75%, #2d5016 100%);
+            color: white;
+            padding: 6rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 212, 170, 0.15) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            background: rgba(0, 212, 170, 0.2);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            color: #00D4AA;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #00D4AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 0;
+        }
+        
+        .contact-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        
+        .contact-form {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--canvrio-blue);
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--canvrio-accent);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .contact-details h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--canvrio-blue);
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-details p {
+            color: var(--gray-600);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--canvrio-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--canvrio-accent);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: var(--canvrio-blue);
+        }
+        
+        .form-checkbox label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+        
+        .form-checkbox a {
+            color: var(--canvrio-blue);
+            text-decoration: underline;
+        }
+        
+        /* Business Types Section */
+        .business-types {
+            padding: 5rem 0;
+            background: var(--canvrio-light-blue);
+        }
+        
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .business-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .business-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px rgba(0, 76, 108, 0.1);
+        }
+        
+        .business-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--canvrio-accent);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .business-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--canvrio-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .business-description {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+        
+        .business-features {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .business-features li {
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .business-features li::before {
+            content: "✓";
+            color: var(--canvrio-accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            color: black;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--canvrio-blue);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--gray-600);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .contact-form-container {
+                max-width: 100%;
+            }
+            
+            .contact-form {
+                padding: 2rem;
+            }
+            
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            max-width: 350px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .notification.success {
+            background: var(--canvrio-accent);
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            background: linear-gradient(135deg, #1B4D3E, #00D4AA);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .modal-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        #privacyContent, #termsContent {
+            padding: 24px;
+            line-height: 1.6;
+        }
+        
+        #privacyContent h3, #termsContent h3 {
+            color: #1B4D3E;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        #privacyContent h3:first-of-type, #termsContent h3:first-of-type {
+            margin-top: 0;
+        }
+        
+        #privacyContent p, #termsContent p {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        #privacyContent ul, #termsContent ul {
+            margin: 0.5rem 0 1rem 1.5rem;
+            color: #333;
+        }
+        
+        #privacyContent li, #termsContent li {
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <a href="/" class="logo" style="height: 120px; display: flex; align-items: center;">
+                    <img src="/static/canvrio-logo.png" alt="Canvrio" style="height: 120px; width: auto; max-width: 400px; object-fit: contain; background: transparent;">
+                </a>
+                <div class="nav-links">
+                    <a href="/#insights">Industry Insights</a>
+                    <a href="/intelligence-hub">Intelligence Hub</a>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="http://127.0.0.1:8001" class="btn btn-primary" target="_blank">Get Website Analysis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">🚀 Let's Connect</div>
+                    <h1>Contact Canvrio</h1>
+                    <p>Transform your cannabis business with impactful intelligence. Let's discuss how we can help you win in your market.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-form-container">
+                    <div class="contact-form">
+                        <h2 class="section-title">Send us a Message</h2>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company" class="form-label">Company/Organization</label>
+                                <input type="text" id="company" name="company" class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="business_type" class="form-label">Business Type</label>
+                                <select id="business_type" name="business_type" class="form-select">
+                                    <option value="">Select Business Type</option>
+                                    <option value="licensed_producer">Licensed Producer (LP)</option>
+                                    <option value="retailer">Cannabis Retailer</option>
+                                    <option value="distributor">Distributor/Wholesaler</option>
+                                    <option value="service_provider">Service Provider</option>
+                                    <option value="investor">Investor/Financial</option>
+                                    <option value="consultant">Consultant/Legal</option>
+                                    <option value="technology">Technology Company</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inquiry_type" class="form-label">Inquiry Type *</label>
+                                <select id="inquiry_type" name="inquiry_type" class="form-select" required>
+                                    <option value="">Select Inquiry Type</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="custom_solution">Custom AI Solution</option>
+                                    <option value="website_analysis">Website Analysis Service</option>
+                                    <option value="market_intelligence">Market Intelligence</option>
+                                    <option value="general">General Question</option>
+                                    <option value="press">Press/Media</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your needs, goals, or questions..." required></textarea>
+                            </div>
+                            
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="age_verified" name="age_verified" required>
+                                <label for="age_verified">I confirm I am 18+ years old and legally able to discuss cannabis business matters</label>
+                            </div>
+                            
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="consent_contact" name="consent_contact" required>
+                                <label for="consent_contact">I consent to being contacted by Canvrio regarding my inquiry</label>
+                            </div>
+                            
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="privacy_agreed" name="privacy_agreed" required>
+                                <label for="privacy_agreed">I agree to the <a href="/" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a></label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Types Section -->
+        <section class="business-types">
+            <div class="container">
+                <h2 class="section-title">Who We Serve</h2>
+                <p class="section-subtitle">Canvrio solutions are designed for cannabis businesses across the Canadian market</p>
+                
+                <div class="business-grid">
+                    <div class="business-card">
+                        <div class="business-icon">🏭</div>
+                        <h3 class="business-title">Licensed Producers</h3>
+                        <p class="business-description">Comprehensive solutions for cultivation, processing, and distribution operations.</p>
+                        <ul class="business-features">
+                            <li>Compliance monitoring</li>
+                            <li>Market intelligence</li>
+                            <li>Competitive analysis</li>
+                            <li>Operational efficiency</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="business-card">
+                        <div class="business-icon">🏪</div>
+                        <h3 class="business-title">Cannabis Retailers</h3>
+                        <p class="business-description">AI-powered tools to optimize retail operations and customer experience.</p>
+                        <ul class="business-features">
+                            <li>Website compliance</li>
+                            <li>Pricing intelligence</li>
+                            <li>Consumer trends</li>
+                            <li>Inventory optimization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="business-card">
+                        <div class="business-icon">🤝</div>
+                        <h3 class="business-title">Service Providers</h3>
+                        <p class="business-description">Solutions for consultants, legal firms, and cannabis service companies.</p>
+                        <ul class="business-features">
+                            <li>Regulatory updates</li>
+                            <li>Industry analysis</li>
+                            <li>Client intelligence</li>
+                            <li>Market opportunities</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="business-card">
+                        <div class="business-icon">💼</div>
+                        <h3 class="business-title">Investors & Financial</h3>
+                        <p class="business-description">Market intelligence and due diligence support for cannabis investments.</p>
+                        <ul class="business-features">
+                            <li>Market analysis</li>
+                            <li>Company research</li>
+                            <li>Risk assessment</li>
+                            <li>Investment opportunities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo" style="margin-bottom: 1rem; height: 100px; display: flex; align-items: center;">
+                        <img src="/static/canvrio-logo.png" alt="Canvrio" style="height: 100px; width: auto; max-width: 400px; object-fit: contain; background: transparent;">
+                    </div>
+                    <p style="color: var(--gray-600); margin-bottom: 1rem;">
+                        Next-generation intelligence platform for the cannabis industry. Driving innovation through strategic intelligence.
+                    </p>
+                    <div style="color: var(--gray-600); font-size: 0.875rem;">
+                        🇨🇦 Proudly Canadian
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Intelligence Hub</h4>
+                    <ul class="footer-links">
+                        <li><a href="/market-analysis">Market Analysis</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="/" onclick="showPrivacyPolicy(); return false;">Privacy Policy</a></li>
+                        <li><a href="/" onclick="showTerms(); return false;">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Canvrio. All rights reserved. | Advancing cannabis innovation through impactful intelligence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const company = formData.get('company');
+            const businessType = formData.get('business_type');
+            const inquiryType = formData.get('inquiry_type');
+            const message = formData.get('message');
+            
+            // Create email content
+            const subject = `Contact Form: ${inquiryType || 'General Inquiry'} from ${name}`;
+            const body = `Name: ${name}
+Email: ${email}
+Company: ${company || 'Not specified'}
+Business Type: ${businessType || 'Not specified'}
+Inquiry Type: ${inquiryType || 'General'}
+
+Message:
+${message}
+
+---
+This message was sent via the Canvrio contact form.`;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:canvrio.ai@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show notification
+            showNotification('Opening your email client to send the message...', 'success');
+            
+            // Reset form after a delay
+            setTimeout(() => {
+                this.reset();
+            }, 2000);
+        });
+        
+        // Notification function
+        function showNotification(message, type = 'success') {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notif => notif.remove());
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Slide in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        // Privacy Policy and Terms Modal Functions
+        function showPrivacyPolicy() {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+        
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const privacyModal = document.getElementById('privacyModal');
+            const termsModal = document.getElementById('termsModal');
+            if (event.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (event.target === termsModal) {
+                termsModal.style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Privacy Policy</h2>
+                <button class="close" onclick="closeModal('privacyModal')">&times;</button>
+            </div>
+            <div id="privacyContent">
+                <p><strong>Last Updated:</strong> August 31, 2025</p>
+                
+                <h3>What We Collect</h3>
+                <p>We collect your email address when you subscribe to our newsletter. This is the only personal information we require.</p>
+                
+                <h3>How We Use It</h3>
+                <p>Your email is used exclusively to send you cannabis industry intelligence, market insights, and regulatory updates. No other use, ever.</p>
+                
+                <h3>Your Control</h3>
+                <p>Unsubscribe anytime via email links or contact us directly. We delete your data immediately upon request.</p>
+                
+                <h3>No Sharing</h3>
+                <p>We never share, sell, or rent your email to anyone. Period.</p>
+                
+                <h3>Your Rights (PIPEDA/GDPR)</h3>
+                <ul>
+                    <li>Access your data</li>
+                    <li>Correct inaccuracies</li>
+                    <li>Delete your data</li>
+                    <li>Withdraw consent anytime</li>
+                </ul>
+                
+                <h3>Cannabis Compliance Notice</h3>
+                <p>Our content is intended for adults 18+ in jurisdictions where cannabis is legal. We comply with Canadian Cannabis Act advertising restrictions.</p>
+                
+                <p><strong>Questions?</strong> Email: privacy@canvrio.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Terms of Service</h2>
+                <button class="close" onclick="closeModal('termsModal')">&times;</button>
+            </div>
+            <div id="termsContent">
+                <p><strong>Last Updated:</strong> August 31, 2025</p>
+                
+                <h3>Eligibility</h3>
+                <p>You must be 18+ and located where cannabis content is legal. By using our service, you confirm both.</p>
+                
+                <h3>Our Service</h3>
+                <p>Canvrio provides cannabis industry intelligence via newsletter and website. Subscription is voluntary and cancellable anytime.</p>
+                
+                <h3>Content Includes:</h3>
+                <ul>
+                    <li>Market analysis and pricing data</li>
+                    <li>Regulatory compliance insights</li>
+                    <li>Technology and business intelligence</li>
+                    <li>Industry trends and forecasts</li>
+                </ul>
+                
+                <h3>Important Disclaimers</h3>
+                <p>All content is informational only - not legal, financial, or professional advice. Always consult qualified professionals for business decisions.</p>
+                
+                <h3>Cannabis Act Compliance</h3>
+                <p>We comply with Canadian Cannabis Act advertising restrictions. Our content targets licensed industry professionals, not consumers.</p>
+                
+                <h3>Limitation of Liability</h3>
+                <p>We provide information "as is" without warranties. Your use of our content is at your own risk.</p>
+                
+                <p><strong>Questions?</strong> Email: legal@canvrio.com</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
