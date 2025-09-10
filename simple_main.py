@@ -305,9 +305,9 @@ class ContentAggregator:
         """Determine if content should be included based on relevance"""
         score = self.calculate_business_relevance(title, content, source)
         if 'health canada' in source.lower():
-            return score >= 1.5
-        # Lowered threshold to capture more news articles
-        return score >= 1.0
+            return score >= 1.0  # Lowered from 1.5
+        # Further lowered threshold to capture more news articles
+        return score >= 0.5  # Lowered from 1.0
     
     def get_content_hash(self, title: str, content: str) -> str:
         """Generate unique hash for content deduplication"""
@@ -335,10 +335,11 @@ class ContentAggregator:
         """Fetch content from RSS feeds using native XML parsing"""
         content = []
         rss_feeds = [
-            {'url': 'https://stratcann.ca/feed', 'source': 'StratCann'},
             {'url': 'https://mjbizdaily.com/feed/', 'source': 'MJBizDaily'},
             {'url': 'https://www.newcannabisventures.com/feed/', 'source': 'New Cannabis Ventures'},
             {'url': 'https://www.cannabisbusinesstimes.com/rss/', 'source': 'Cannabis Business Times'},
+            {'url': 'https://www.leafly.com/feed', 'source': 'Leafly'},
+            {'url': 'https://www.ganjapreneur.com/feed/', 'source': 'Ganjapreneur'},
         ]
         
         for feed_info in rss_feeds:
@@ -406,18 +407,28 @@ class ContentAggregator:
         return content
     
     def fetch_reddit_content(self) -> List[Dict]:
-        """Fetch content from Reddit (simplified approach)"""
+        """Fetch content from Reddit with better error handling"""
         content = []
-        headers = {'User-Agent': 'Canvrio/1.0'}
+        # Better User-Agent to avoid blocks
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
         subreddits = ['canadients', 'TheOCS', 'CanadianCannabisLPs']
         
         for sub in subreddits:
             try:
                 url = f'https://www.reddit.com/r/{sub}/hot.json?limit=10'
                 response = requests.get(url, headers=headers, timeout=10)
+                
+                # Handle 403 blocks gracefully
+                if response.status_code == 403:
+                    logger.warning(f"Reddit blocked for r/{sub}, skipping...")
+                    continue
+                    
                 response.raise_for_status()
                 
-                for post_data in response.json()['data']['children']:
+                data = response.json()
+                for post_data in data.get('data', {}).get('children', []):
                     post = post_data['data']
                     if post.get('created_utc', 0) > (time.time() - 86400):
                         content.append({
