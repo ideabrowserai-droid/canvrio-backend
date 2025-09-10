@@ -69,7 +69,6 @@ Micro SAAS/
 cannabis_websites/
 perplexity_mcp/
 
-# Frontend files (separate repo)
-*.html
-static/
+# Static assets at root level (keep excluded for backend deployment)
+/static/
 canvrio*.png
