@@ -97,6 +97,63 @@
             <button id="bulk-reuse-btn" class="btn btn-approve" style="background-color: #f39c12;">↩️ Bulk Return to Pending</button>
         </div>
         
+        <!-- Manual Content Addition Section -->
+        <div id="manual-content-section" style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 2px solid #3498db;">
+            <h3 style="margin-top: 0; color: #2c3e50;">📝 Manually Add Content</h3>
+            <form id="manualContentForm">
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">Title *</label>
+                        <input type="text" id="manualTitle" required placeholder="Article headline" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">Source *</label>
+                        <input type="text" id="manualSource" required placeholder="e.g., Reuters, CBC News" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">Content/Summary *</label>
+                    <textarea id="manualContent" rows="3" required placeholder="Brief summary or key points (max 400 chars)" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;"></textarea>
+                    <small style="color: #666;">Characters: <span id="charCount">0</span>/400</small>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <div style="flex: 2; min-width: 250px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">URL *</label>
+                        <input type="url" id="manualUrl" required placeholder="https://example.com/article" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1; min-width: 120px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">Priority</label>
+                        <select id="manualPriority" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                            <option value="1">🔥 Breaking</option>
+                            <option value="2" selected>⭐ High</option>
+                            <option value="3">📰 Normal</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2c3e50;">Category</label>
+                    <select id="manualCategory" style="width: 250px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                        <option value="Industry Commentary">Industry Commentary</option>
+                        <option value="Regulatory">Regulatory</option>
+                        <option value="Public Company">Public Company</option>
+                        <option value="Retail Operations">Retail Operations</option>
+                        <option value="Pricing Intelligence">Pricing Intelligence</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-approve" style="padding: 10px 20px;">
+                        <i class="fas fa-plus"></i> Add to Approved Content
+                    </button>
+                    <button type="reset" class="btn btn-clear">Clear Form</button>
+                </div>
+            </form>
+            <div id="manualAddStatus" style="margin-top: 15px;"></div>
+        </div>
+        
         <div class="filters">
             <div class="filter-row">
                 <label>Filter by Source:</label>
@@ -674,6 +731,68 @@
             // Preview tab event listeners
             previewLatestTab.addEventListener('click', () => switchPreviewTab('latest'));
             previewPicksTab.addEventListener('click', () => switchPreviewTab('picks'));
+            
+            // Manual Content Form Handling
+            const API_BASE_URL = 'https://canvrio-backend.onrender.com';
+            
+            // Character counter for manual content
+            document.getElementById('manualContent').addEventListener('input', function() {
+                const charCount = this.value.length;
+                document.getElementById('charCount').textContent = charCount;
+                if (charCount > 400) {
+                    this.value = this.value.substring(0, 400);
+                    document.getElementById('charCount').textContent = 400;
+                }
+            });
+
+            // Handle manual content submission
+            document.getElementById('manualContentForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const statusDiv = document.getElementById('manualAddStatus');
+                statusDiv.innerHTML = '<div style="background-color: #cce7ff; color: #0066cc; padding: 10px; border-radius: 5px;">Adding content...</div>';
+                
+                const data = {
+                    title: document.getElementById('manualTitle').value,
+                    content: document.getElementById('manualContent').value,
+                    source: document.getElementById('manualSource').value,
+                    url: document.getElementById('manualUrl').value,
+                    category: document.getElementById('manualCategory').value,
+                    priority: parseInt(document.getElementById('manualPriority').value)
+                };
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/content/manual-add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic ' + btoa('canvrio:canntech420')
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok && result.success) {
+                        statusDiv.innerHTML = '<div style="background-color: #d1e7dd; color: #0f5132; padding: 10px; border-radius: 5px;">✅ Content added successfully!</div>';
+                        document.getElementById('manualContentForm').reset();
+                        document.getElementById('charCount').textContent = '0';
+                        
+                        // Refresh the approved content list and preview
+                        setTimeout(() => {
+                            if (currentMode === 'approved') {
+                                fetchContent();
+                            }
+                            loadPreviewContent();
+                            statusDiv.innerHTML = '';
+                        }, 2000);
+                    } else {
+                        statusDiv.innerHTML = `<div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;">Error: ${result.detail || 'Failed to add content'}</div>`;
+                    }
+                } catch (error) {
+                    statusDiv.innerHTML = `<div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;">Error: ${error.message}</div>`;
+                }
+            });
             
             // Initial Load
             fetchContent();

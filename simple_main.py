@@ -168,6 +168,14 @@ class NewsletterSubscription(BaseModel):
 class BulkUpdateRequest(BaseModel):
     content_ids: List[int]
 
+class ManualContentSubmission(BaseModel):
+    title: str
+    content: str
+    source: str
+    url: str
+    category: str = "Industry Commentary"
+    priority: int = 2  # Default to High priority for manual additions
+
 # --- Database Initialization ---
 def init_database():
     """Initialize SQLite database for newsletter subscriptions"""
@@ -1100,6 +1108,55 @@ async def reuse_content(content_id: int):
     except Exception as e:
         logger.error(f"Error returning content {content_id} to pending: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to return content {content_id} to pending.")
+
+@app.post("/api/content/manual-add")
+async def add_manual_content(
+    submission: ManualContentSubmission,
+    username: str = Depends(get_curator_credentials)
+):
+    """Manually add curated content directly to the approved list"""
+    try:
+        conn = sqlite3.connect(aggregator.db_path)
+        conn.execute('PRAGMA journal_mode=WAL;')
+        cursor = conn.cursor()
+        
+        # Generate hash to prevent duplicates
+        content_hash = hashlib.md5(f"{submission.title}{submission.content}".encode()).hexdigest()
+        
+        # Insert directly as approved with current timestamp
+        cursor.execute('''
+            INSERT INTO content_feeds (
+                title, content, source, category, url, 
+                published_date, created_at, approval_timestamp,
+                content_hash, compliance_status, priority, is_active
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            submission.title,
+            submission.content,
+            submission.source,
+            submission.category,
+            submission.url,
+            datetime.now(),  # Published now
+            datetime.now(),  # Created now
+            datetime.now(),  # Approved now
+            content_hash,
+            'approved',  # Directly approved
+            submission.priority,
+            1
+        ))
+        
+        conn.commit()
+        conn.close()
+        
+        return {
+            "success": True, 
+            "message": f"Manual content '{submission.title}' added successfully"
+        }
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail="Content already exists")
+    except Exception as e:
+        logger.error(f"Error adding manual content: {e}")
+        raise HTTPException(status_code=500, detail="Failed to add content")
 
 
 # --- Main Execution ---
