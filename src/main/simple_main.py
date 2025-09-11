@@ -1,11 +1,11 @@
-import feedparser
+import xml.etree.ElementTree as ET
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 import uvicorn
 from datetime import datetime, timedelta
 import sqlite3
@@ -24,7 +24,7 @@ from contextlib import asynccontextmanager
 # Content Aggregation - Clean single class approach
 import requests
 from bs4 import BeautifulSoup
-import feedparser
+import xml.etree.ElementTree as ET
 import time
 import hashlib
 from duckduckgo_search import DDGS
@@ -157,7 +157,8 @@ class NewsletterSubscription(BaseModel):
     age_verified: bool
     data_processing_consent: bool
 
-    @validator('email')
+    @field_validator('email')
+    @classmethod
     def validate_email(cls, v):
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, v):
@@ -166,6 +167,14 @@ class NewsletterSubscription(BaseModel):
 
 class BulkUpdateRequest(BaseModel):
     content_ids: List[int]
+
+class ManualContentSubmission(BaseModel):
+    title: str
+    content: str
+    source: str
+    url: str
+    category: str = "Industry Commentary"
+    priority: int = 2  # Default to High priority for manual additions
 
 # --- Database Initialization ---
 def init_database():
@@ -304,9 +313,9 @@ class ContentAggregator:
         """Determine if content should be included based on relevance"""
         score = self.calculate_business_relevance(title, content, source)
         if 'health canada' in source.lower():
-            return score >= 1.5
-        # Lowered threshold to capture more news articles
-        return score >= 1.0
+            return score >= 1.0  # Lowered from 1.5
+        # Further lowered threshold to capture more news articles
+        return score >= 0.5  # Lowered from 1.0
     
     def get_content_hash(self, title: str, content: str) -> str:
         """Generate unique hash for content deduplication"""
@@ -331,35 +340,73 @@ class ContentAggregator:
         return 'Industry Commentary'
     
     def fetch_rss_feeds(self) -> List[Dict]:
-        """Fetch content from RSS feeds"""
+        """Fetch content from RSS feeds using native XML parsing"""
         content = []
         rss_feeds = [
-            {'url': 'https://stratcann.ca/feed', 'source': 'StratCann'},
             {'url': 'https://mjbizdaily.com/feed/', 'source': 'MJBizDaily'},
             {'url': 'https://www.newcannabisventures.com/feed/', 'source': 'New Cannabis Ventures'},
             {'url': 'https://www.cannabisbusinesstimes.com/rss/', 'source': 'Cannabis Business Times'},
+            {'url': 'https://www.leafly.com/feed', 'source': 'Leafly'},
+            {'url': 'https://www.ganjapreneur.com/feed/', 'source': 'Ganjapreneur'},
         ]
         
         for feed_info in rss_feeds:
             try:
-                feed = feedparser.parse(feed_info['url'])
-                for entry in feed.entries[:5]:
+                # Fetch RSS feed
+                response = requests.get(feed_info['url'], headers=self.headers, timeout=10)
+                response.raise_for_status()
+                
+                # Parse XML
+                root = ET.fromstring(response.content)
+                
+                # Handle both RSS 2.0 and Atom feeds
+                items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
+                
+                for entry in items[:5]:
+                    # Extract title
+                    title_elem = entry.find('title') or entry.find('{http://www.w3.org/2005/Atom}title')
+                    title = title_elem.text if title_elem is not None else 'No title'
+                    title = re.sub(r'^[^a-zA-Z0-9@]+', '', title).strip()
+                    
+                    # Extract description/summary
+                    desc_elem = (entry.find('description') or 
+                               entry.find('{http://www.w3.org/2005/Atom}summary') or
+                               entry.find('{http://www.w3.org/2005/Atom}content'))
+                    summary = desc_elem.text if desc_elem is not None else ''
+                    summary = BeautifulSoup(summary, 'html.parser').get_text(strip=True)[:400]
+                    
+                    # Extract link
+                    link_elem = entry.find('link') or entry.find('{http://www.w3.org/2005/Atom}link')
+                    if link_elem is not None:
+                        url = link_elem.text or link_elem.get('href', '')
+                    else:
+                        url = ''
+                    
+                    # Extract published date
+                    pub_elem = (entry.find('pubDate') or 
+                              entry.find('{http://www.w3.org/2005/Atom}published') or
+                              entry.find('{http://www.w3.org/2005/Atom}updated'))
+                    
                     published_dt = datetime.now()
-                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                        published_dt = datetime(*entry.published_parsed[:6])
+                    if pub_elem is not None and pub_elem.text:
+                        try:
+                            # Try parsing different date formats
+                            from dateutil import parser
+                            published_dt = parser.parse(pub_elem.text)
+                            if published_dt.tzinfo:
+                                published_dt = published_dt.replace(tzinfo=None)
+                        except:
+                            published_dt = datetime.now()
                     
                     # Skip content older than 7 days to allow content aging for Canvrio's Picks
                     if published_dt < (datetime.now() - timedelta(days=7)):
                         continue
                     
-                    title = re.sub(r'^[^a-zA-Z0-9@]+', '', entry.title).strip()
-                    summary = BeautifulSoup(getattr(entry, 'summary', ''), 'html.parser').get_text(strip=True)[:400]
-                    
                     content.append({
                         'title': title,
                         'content': summary,
                         'source': feed_info['source'],
-                        'url': entry.link,
+                        'url': url,
                         'published_date': published_dt
                     })
             except Exception as e:
@@ -368,18 +415,28 @@ class ContentAggregator:
         return content
     
     def fetch_reddit_content(self) -> List[Dict]:
-        """Fetch content from Reddit (simplified approach)"""
+        """Fetch content from Reddit with better error handling"""
         content = []
-        headers = {'User-Agent': 'Canvrio/1.0'}
+        # Better User-Agent to avoid blocks
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
         subreddits = ['canadients', 'TheOCS', 'CanadianCannabisLPs']
         
         for sub in subreddits:
             try:
                 url = f'https://www.reddit.com/r/{sub}/hot.json?limit=10'
                 response = requests.get(url, headers=headers, timeout=10)
+                
+                # Handle 403 blocks gracefully
+                if response.status_code == 403:
+                    logger.warning(f"Reddit blocked for r/{sub}, skipping...")
+                    continue
+                    
                 response.raise_for_status()
                 
-                for post_data in response.json()['data']['children']:
+                data = response.json()
+                for post_data in data.get('data', {}).get('children', []):
                     post = post_data['data']
                     if post.get('created_utc', 0) > (time.time() - 86400):
                         content.append({
@@ -1051,6 +1108,55 @@ async def reuse_content(content_id: int):
     except Exception as e:
         logger.error(f"Error returning content {content_id} to pending: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to return content {content_id} to pending.")
+
+@app.post("/api/content/manual-add")
+async def add_manual_content(
+    submission: ManualContentSubmission,
+    username: str = Depends(get_curator_credentials)
+):
+    """Manually add curated content directly to the approved list"""
+    try:
+        conn = sqlite3.connect(aggregator.db_path)
+        conn.execute('PRAGMA journal_mode=WAL;')
+        cursor = conn.cursor()
+        
+        # Generate hash to prevent duplicates
+        content_hash = hashlib.md5(f"{submission.title}{submission.content}".encode()).hexdigest()
+        
+        # Insert directly as approved with current timestamp
+        cursor.execute('''
+            INSERT INTO content_feeds (
+                title, content, source, category, url, 
+                published_date, created_at, approval_timestamp,
+                content_hash, compliance_status, priority, is_active
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            submission.title,
+            submission.content,
+            submission.source,
+            submission.category,
+            submission.url,
+            datetime.now(),  # Published now
+            datetime.now(),  # Created now
+            datetime.now(),  # Approved now
+            content_hash,
+            'approved',  # Directly approved
+            submission.priority,
+            1
+        ))
+        
+        conn.commit()
+        conn.close()
+        
+        return {
+            "success": True, 
+            "message": f"Manual content '{submission.title}' added successfully"
+        }
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail="Content already exists")
+    except Exception as e:
+        logger.error(f"Error adding manual content: {e}")
+        raise HTTPException(status_code=500, detail="Failed to add content")
 
 
 # --- Main Execution ---
