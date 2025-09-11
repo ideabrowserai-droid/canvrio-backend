@@ -14,5 +14,5 @@ beautifulsoup4==4.12.2
 anthropic==0.7.7
 
 # Search Dependencies
-duckduckgo-search==3.8.5
+duckduckgo-search==8.1.1
 python-dateutil==2.8.2
