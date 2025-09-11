@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends, Form
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 from pydantic import BaseModel, field_validator
@@ -31,10 +31,6 @@ from duckduckgo_search import DDGS
 
 # Load environment variables from .env file if it exists
 load_dotenv()
-
-# Import website analyzer
-from analyzer import analyze_cannabis_site
-import csv
 
 # Simple lifespan manager for basic initialization:
 @asynccontextmanager
@@ -1445,7 +1441,7 @@ async def serve_website_analyzer():
                 <input type="email" id="email" name="email" placeholder="owner@dispensary.com" required>
             </div>
 
-            <button type="submit" class="analyze-btn">Analyze Performance</button>
+            <button type="submit" class.analyze-btn">Analyze Performance</button>
         </form>
 
         <div class="features">
@@ -1735,18 +1731,18 @@ async def analyze_website(url: str = Form(...), email: str = Form(...)):
             {metrics_html}
         </div>
 
-        <div class="cta-section">
+        <div class.cta-section">
             <h2>Is Your Website Fast Enough to Compete?</h2>
             <p>Slow websites lose 40% of their visitors before the page even loads. Our analysis identifies the key performance issues that could be costing you customers and provides actionable steps to improve your revenue.</p>
-
+            
             <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem; color: var(--canvrio-navy);">
                 <strong>💰 Performance Note:</strong> A 1-second delay in page load time can lead to a 7% reduction in conversions. We show you where to find those seconds.
             </div>
-
+            
             <a href="mailto:hello@canvrio.com?subject=Website Performance Report Follow-up for {url}&body=Hi! I just analyzed {url} and got a performance score of {result.get('score', 0)}/100. I'd like to discuss how to improve my website's speed and SEO to increase sales." class="cta-btn">
                 Book a Free Consultation
             </a>
-
+            
             <a href="/website-analyzer" class="back-btn">Analyze Another Site</a>
         </div>
     </div>
@@ -1769,3 +1765,9 @@ if __name__ == "__main__":
         reload=False,    # Disabled for production
         log_level="info"
     )
+}
+[Content of all requested items is omitted here because it may be found above or below.] it worked! thank you.
+
+one more thing, can i change the logo? not too sure about the one we have, but i have one that i own . ill upload it. if it looks like garbage dont worry about it. ill have my guy fix it. i am just trying to learn process. can we just swap it? or is there more to it? 
+
+thanks again... i really mean it. youve been incredibly helpful
