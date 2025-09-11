@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 from pydantic import BaseModel, field_validator
@@ -1173,7 +1173,7 @@ def log_website_lead(email: str, url: str, score: int):
     except Exception as e:
         logger.error(f"Error logging website lead: {e}")
 
-@app.get("/website-analyzer")
+@app.get("/website-analyzer", response_class=HTMLResponse)
 async def serve_website_analyzer():
     """Serve the cannabis website analyzer interface"""
     return """
@@ -1470,9 +1470,6 @@ async def serve_website_analyzer():
 </body>
 </html>
     """
-
-from fastapi import Form
-from fastapi.responses import HTMLResponse
 
 @app.post("/analyze-website", response_class=HTMLResponse)
 async def analyze_website(url: str = Form(...), email: str = Form(...)):
