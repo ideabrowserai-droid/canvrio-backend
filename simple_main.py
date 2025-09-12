@@ -1171,3 +1171,8 @@ if __name__ == "__main__":
         log_level="info"
     )
 }
+[Content of all requested items is omitted here because it may be found above or below.] it worked! thank you.
+
+one more thing, can i change the logo? not too sure about the one we have, but i have one that i own . ill upload it. if it looks like garbage dont worry about it. ill have my guy fix it. i am just trying to learn process. can we just swap it? or is there more to it? 
+
+thanks again... i really mean it. youve been incredibly helpful
