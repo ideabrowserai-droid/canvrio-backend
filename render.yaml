@@ -3,7 +3,7 @@ services:
     name: canvrio-backend
     runtime: python3
     buildCommand: pip install -r requirements.txt
-    startCommand: python simple_main.py
+    startCommand: bash start.sh
     plan: starter
     envVars:
       - key: ANTHROPIC_API_KEY
