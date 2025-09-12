@@ -1176,7 +1176,7 @@ def log_website_lead(email: str, url: str, score: int):
 @app.get("/website-analyzer")
 async def serve_website_analyzer():
     """Serve the cannabis website analyzer interface"""
-    return """
+    return HTMLResponse(content="""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1469,7 +1469,7 @@ async def serve_website_analyzer():
     </div>
 </body>
 </html>
-    """
+    """)
 
 from fastapi import Form
 from fastapi.responses import HTMLResponse
