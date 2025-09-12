@@ -1434,7 +1434,7 @@ async def serve_website_analyzer():
             <p>Find Out How Your Website Speed & SEO Rank Against Competitors</p>
         </div>
 
-        <form class="analyzer-form" method="post" action="/analyze-website">
+        <form class="analyzer-form" method="post" action="https://canvrio-backend.onrender.com/analyze-website">
             <div class="form-group">
                 <label for="url">Cannabis Website URL</label>
                 <input type="url" id="url" name="url" placeholder="https://your-dispensary.com" required>
