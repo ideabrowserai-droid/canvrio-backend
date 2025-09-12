@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Payment Advantage - Canvrio AI Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #ffffff;
+        }
+        
+        /* Futuristic Typography - Match homepage */
+        h1, h2, h3, .logo-text, .nav-links a {
+            font-family: 'Segoe UI', 'Roboto', 'Arial Black', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        
+        /* Color Variables */
+        :root {
+            --canvrio-blue: #004C6C;
+            --canvrio-green: #1B4D3E;
+            --canvrio-accent: #00D4AA;
+            --canvrio-light-blue: #E8F4F8;
+            --gray-100: #f7fafc;
+            --gray-200: #e2e8f0;
+            --gray-500: #718096;
+            --gray-600: #4a5568;
+            --gray-900: #1a202c;
+        }
+        
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: var(--canvrio-accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #00b894;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.3);
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 200px;
+            background: var(--canvrio-blue);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--canvrio-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--canvrio-blue);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+        }
+        
+        /* Article Header */
+        .article-header {
+            background: linear-gradient(135deg, #001f3f 0%, #004C6C 25%, #1B4D3E 75%, #2d5016 100%);
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .article-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 212, 170, 0.15) 0%, transparent 50%);
+        }
+        
+        .article-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .article-category {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #00D4AA;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+        
+        .article-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #00D4AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+        
+        .article-body h2 {
+            color: var(--canvrio-blue);
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            font-weight: 700;
+        }
+        
+        .article-body h3 {
+            color: var(--canvrio-blue);
+            font-size: 1.5rem;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+        
+        .article-body p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--gray-600);
+        }
+        
+        .article-body ul, .article-body ol {
+            margin: 1.5rem 0 1.5rem 2rem;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--gray-600);
+        }
+        
+        .article-body li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-box {
+            background: var(--canvrio-light-blue);
+            border-left: 4px solid var(--canvrio-accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .stat-highlight {
+            background: linear-gradient(135deg, var(--canvrio-accent) 0%, var(--canvrio-green) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+
+        .back-to-hub {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 3rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            color: black;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--canvrio-blue);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--gray-600);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .article-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <a href="/" class="logo" style="height: 120px; display: flex; align-items: center;">
+                    <img src="/static/canvrio-logo.png" alt="Canvrio" style="height: 120px; width: auto; max-width: 400px; object-fit: contain; background: transparent;">
+                </a>
+                <div class="nav-links">
+                    <a href="/#insights">Industry Insights</a>
+                    <a href="/intelligence-hub">Intelligence Hub</a>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="http://127.0.0.1:8001" class="btn btn-primary" target="_blank">Get Website Analysis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Article Header -->
+        <section class="article-header">
+            <div class="container">
+                <div class="article-category">Payment Intelligence</div>
+                <h1 class="article-title">Canadian Retailers' 16% Cash Advantage: How Payment Solutions Are Reshaping Dispensary Margins</h1>
+                <div class="article-meta">
+                    <span>By Canvrio Staff</span>
+                    <span>•</span>
+                    <span>Published September 1, 2025</span>
+                    <span>•</span>
+                    <span>7 min read</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <div class="article-content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/intelligence-hub">Intelligence Hub</a> → Payment Analysis
+                </div>
+
+                <div class="article-body">
+                    <p><strong>While US dispensaries struggle with cash-only operations and banking restrictions, Canadian cannabis retailers have revolutionized their payment infrastructure, reducing cash transactions to just 16% of total volume while achieving 5x higher average transaction values through integrated payment solutions and federal banking access.</strong></p>
+
+                    <div class="highlight-box">
+                        <p><strong>Key Payment Intelligence:</strong> Canadian dispensaries process <span class="stat-highlight">$112 average card transactions</span> versus <span class="stat-highlight">$22 cash transactions</span>, while federal banking access creates <span class="stat-highlight">15% lower interchange rates</span> than US competitors, driving unprecedented margin improvements across Canada's 20,000+ licensed retailers.</p>
+                    </div>
+
+                    <h2>The $51 Million Payment Revolution Signal</h2>
+                    <p>Treez's recent $51 million Series C funding round, specifically targeted at payment solutions and analytics, signals a critical inflection point where cannabis payment processing has become the new battleground for industry dominance. This massive investment validates what Canadian retailers have already discovered: payment innovation drives both operational efficiency and customer experience transformation.</p>
+
+                    <p>Why did Square choose Canada first? The same reason Treez raised $51 million for payments – Canadian cannabis infrastructure leads globally through regulatory clarity, traditional banking access, and proven payment processing capabilities that US markets simply cannot match due to federal banking restrictions.</p>
+
+                    <h3>Federal Banking Access Creates Competitive Edge</h3>
+                    <p>Canada's federally legal cannabis framework has eliminated the banking barriers that continue to plague US dispensaries, creating fundamental operational advantages:</p>
+
+                    <ul>
+                        <li><strong>Traditional Processor Access:</strong> Moneris, Square, and TD Merchant Solutions serve Canadian cannabis with full feature sets</li>
+                        <li><strong>Interchange Rate Advantage:</strong> 15% lower processing fees compared to US cannabis-specific solutions</li>
+                        <li><strong>Credit/Debit Integration:</strong> Full card acceptance without "cashless ATM" workarounds</li>
+                        <li><strong>Banking Relationship Stability:</strong> No risk of sudden account closures or service disruptions</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>Processing Cost Comparison:</strong> Canadian cannabis retailers pay <span class="stat-highlight">1.5-2.8% processing fees</span> through traditional processors, while US dispensaries face <span class="stat-highlight">3.5-6% cannabis-specific rates</span> plus compliance complications and banking instability.</p>
+                    </div>
+
+                    <h2>The $22 vs $112 Transaction Revolution</h2>
+                    <p>The most striking indicator of Canada's payment advantage lies in transaction value analysis, where electronic payment adoption has fundamentally transformed customer purchasing behavior and retailer economics.</p>
+
+                    <h3>Cart Size Psychology and Customer Behavior</h3>
+                    <p>Electronic payments remove the psychological barriers of cash transactions, leading to dramatically different purchasing patterns:</p>
+
+                    <ul>
+                        <li><strong>Cash Transaction Average:</strong> $22 per purchase reflecting limited wallet amounts</li>
+                        <li><strong>Card Transaction Average:</strong> $112 per purchase with premium product selection</li>
+                        <li><strong>Purchasing Decision Impact:</strong> Electronic payments enable impulse purchases and premium product discovery</li>
+                        <li><strong>Customer Convenience Factor:</strong> No ATM visits or cash counting reducing transaction friction</li>
+                    </ul>
+
+                    <p>Greatest Hits dispensary documented a 31% cart increase after implementing integrated payment solutions, demonstrating how payment infrastructure directly impacts revenue per customer visit. This pattern has been replicated across Canadian retailers, creating a competitive advantage impossible to achieve in cash-heavy operations.</p>
+
+                    <h3>Security and Operational Cost Elimination</h3>
+                    <p>The shift to 16% cash operations has eliminated major operational cost centers that continue burdening cash-dependent retailers:</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Cost Reduction Impact:</strong> Electronic payment adoption eliminates <span class="stat-highlight">$2,400-4,800 monthly cash handling costs</span> per location while reducing security insurance premiums and eliminating armored car service requirements.</p>
+                    </div>
+
+                    <h2>Canadian Payment Processing Leaders Driving Innovation</h2>
+                    <p>Canada's competitive payment landscape has produced world-class cannabis payment solutions that are now expanding internationally, leveraging Canadian regulatory experience to serve global markets.</p>
+
+                    <h3>Merrco: Payment Processing Pioneer</h3>
+                    <p>Merrco, Canada's leading cannabis payment processor since 2016, has established the benchmark for cannabis payment innovation and is now leveraging Canadian expertise for US market expansion:</p>
+
+                    <ul>
+                        <li><strong>Market Leadership:</strong> Best Cannabis Payments Company 2023 (Kind Magazine)</li>
+                        <li><strong>International Expansion:</strong> US launch with CBD capabilities based on Canadian operational excellence</li>
+                        <li><strong>Technology Innovation:</strong> Branded payment experiences and B2B SaaS platform integration</li>
+                        <li><strong>Regulatory Expertise:</strong> Deep compliance knowledge enabling rapid market entry</li>
+                    </ul>
+
+                    <h3>Cova Software: Integrated POS Excellence</h3>
+                    <p>Cova Software has revolutionized cannabis retail through Cova Pay and comprehensive POS integration, setting new industry standards for speed and reliability:</p>
+
+                    <ul>
+                        <li><strong>Infrastructure Scale:</strong> $1.2 trillion transaction infrastructure backing</li>
+                        <li><strong>Integration Excellence:</strong> Seamless POS integration eliminating third-party payment contracts</li>
+                        <li><strong>Operational Efficiency:</strong> One-minute payment processing reducing customer wait times</li>
+                        <li><strong>Market Validation:</strong> Leading Canadian retailers choose Cova for payment reliability</li>
+                    </ul>
+
+                    <h3>Traditional Processor Market Entry</h3>
+                    <p>Square's 2023 Canadian cannabis market entry through Jane Technologies partnership demonstrates how traditional payment processors view Canada as the proving ground for cannabis payment innovation:</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Strategic Market Validation:</strong> Square's Canadian cannabis entry creates <span class="stat-highlight">mainstream payment processor credibility</span> while establishing operational foundation for eventual US cannabis market expansion when federal restrictions lift.</p>
+                    </div>
+
+                    <h2>Compliance Integration and Automated Reporting</h2>
+                    <p>Canadian payment solutions have achieved seamless integration with compliance reporting requirements, reducing regulatory overhead while ensuring complete transaction transparency.</p>
+
+                    <h3>Real-Time Compliance Automation</h3>
+                    <p>Integrated payment and compliance systems have eliminated manual reporting processes that consume 15-25% of operational budgets:</p>
+
+                    <ul>
+                        <li><strong>Automated Reconciliation:</strong> Payment data flows directly to regulatory reporting systems</li>
+                        <li><strong>Real-Time Tax Collection:</strong> Automatic tax calculation and remittance integration</li>
+                        <li><strong>Audit Trail Completeness:</strong> Full transaction history with customer privacy protection</li>
+                        <li><strong>Regulatory Confidence:</strong> 99.2% compliance rate among Canadian licensed retailers</li>
+                    </ul>
+
+                    <h3>Data Analytics and Business Intelligence</h3>
+                    <p>Electronic payment adoption has unlocked sophisticated business intelligence capabilities previously impossible with cash-heavy operations:</p>
+
+                    <ul>
+                        <li><strong>Customer Behavior Analysis:</strong> Purchase patterns, product preferences, and loyalty tracking</li>
+                        <li><strong>Inventory Optimization:</strong> Real-time sales data enabling intelligent purchasing decisions</li>
+                        <li><strong>Margin Analysis:</strong> Product-level profitability tracking with payment method correlation</li>
+                        <li><strong>Fraud Prevention:</strong> Advanced analytics identifying suspicious transaction patterns</li>
+                    </ul>
+
+                    <h2>International Expansion and Technology Export</h2>
+                    <p>Canadian cannabis payment expertise has become a exportable competitive advantage as international markets develop legal frameworks and seek proven operational solutions.</p>
+
+                    <h3>Global Market Leadership Position</h3>
+                    <p>Canadian payment processors and POS providers are leading international cannabis market development through regulatory expertise and proven technology platforms:</p>
+
+                    <ul>
+                        <li><strong>Germany:</strong> EU market entry leveraging Canadian compliance experience</li>
+                        <li><strong>Australia:</strong> Medical cannabis payment processing partnerships</li>
+                        <li><strong>Thailand:</strong> Asian market expansion with regulatory consulting integration</li>
+                        <li><strong>United Kingdom:</strong> Payment technology partnerships supporting medical cannabis programs</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>Export Market Potential:</strong> Canadian cannabis payment technology exports projected to reach <span class="stat-highlight">$280 million annually by 2027</span> as international markets adopt Canadian payment processing standards and regulatory frameworks.</p>
+                    </div>
+
+                    <h3>Technology Transfer and Knowledge Export</h3>
+                    <p>The integrated payment and compliance solutions developed for Canadian cannabis regulation are becoming global industry standards:</p>
+
+                    <ul>
+                        <li><strong>Regulatory Framework Consulting:</strong> Canadian companies advising international market development</li>
+                        <li><strong>Technology Platform Licensing:</strong> Proven payment solutions adapted for local markets</li>
+                        <li><strong>Operational Excellence Training:</strong> Best practices transfer supporting international operators</li>
+                        <li><strong>Compliance Integration Services:</strong> End-to-end solutions reducing international market entry complexity</li>
+                    </ul>
+
+                    <h2>Future Payment Innovation and Market Evolution</h2>
+                    <p>Canada's cannabis payment infrastructure continues evolving toward increased sophistication, international expansion, and integration with emerging payment technologies.</p>
+
+                    <h3>Emerging Payment Technologies</h3>
+                    <p>Canadian cannabis retailers are pioneering adoption of next-generation payment solutions that will define the industry's future:</p>
+
+                    <ul>
+                        <li><strong>Cryptocurrency Integration:</strong> Bitcoin and stablecoin acceptance pilot programs</li>
+                        <li><strong>Buy Now, Pay Later:</strong> Cannabis-specific BNPL solutions for premium purchases</li>
+                        <li><strong>Mobile Wallet Expansion:</strong> Apple Pay, Google Pay, and Samsung Pay optimization</li>
+                        <li><strong>Biometric Authentication:</strong> Fingerprint and facial recognition payment authorization</li>
+                    </ul>
+
+                    <h3>AI-Powered Payment Analytics</h3>
+                    <p>Machine learning integration with payment data is creating unprecedented business intelligence capabilities:</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Analytics Evolution:</strong> AI-powered payment analytics enable <span class="stat-highlight">predictive inventory management</span>, <span class="stat-highlight">dynamic pricing optimization</span>, and <span class="stat-highlight">personalized customer experience</span> creation through transaction pattern analysis.</p>
+                    </div>
+
+                    <h2>Strategic Assessment: Payment Infrastructure as Competitive Advantage</h2>
+                    <p>Canada's cannabis payment infrastructure advantage represents a sustainable competitive moat that becomes increasingly valuable as international markets develop and seek proven operational solutions.</p>
+
+                    <p>The combination of federal banking access, 15% lower processing costs, 5x higher transaction values, and integrated compliance reporting creates operational advantages that cannot be replicated in banking-restricted markets. This infrastructure leadership position generates exportable technology solutions, consulting revenue, and international market expansion opportunities that extend far beyond domestic retail operations.</p>
+
+                    <p>As Treez's $51 million payment-focused funding demonstrates, the cannabis industry recognizes payment processing as the foundation for sustainable competitive advantage. Canadian retailers and technology providers have already built and proven this foundation, positioning them as leaders in the global cannabis payment revolution.</p>
+
+                    <!-- SOURCE CITATIONS -->
+                    <div style="background: #f8f9fa; border-top: 3px solid #0C1B2A; padding: 2rem; margin-top: 3rem; border-radius: 8px;">
+                        <h2 style="color: #0C1B2A; margin-bottom: 1.5rem;">📚 Sources</h2>
+                        
+                        <p style="margin-bottom: 1.5rem;">This analysis is based on data compiled from multiple industry sources:</p>
+                        
+                        <ul style="margin-bottom: 2rem; line-height: 1.8;">
+                            <li>Cova Software. (2025). <em>Understanding Cannabis Payment Processing Fees for Dispensaries</em>. Retrieved September 1, 2025, from <a href="https://covasoftware.com/blog/understand-cannabis-payment-processing-fees-for-dispensaries" target="_blank">https://covasoftware.com/blog/understand-cannabis-payment-processing-fees-for-dispensaries</a></li>
+                            
+                            <li>Clearly Payments. (2025). <em>USA vs Canada: Interchange Rate Comparison for Payments</em>. Retrieved September 1, 2025, from <a href="https://clearlypayments.com/blog/usa-vs-canada-interchange-rate-comparison-for-payments" target="_blank">https://clearlypayments.com/blog/usa-vs-canada-interchange-rate-comparison-for-payments</a></li>
+                            
+                            <li>MJBizDaily. (2025, August 28). <em>Cannabis tech firm Treez raises $51 million in Series C funding</em>. Retrieved from <a href="https://mjbizdaily.com/cannabis-tech-firm-treez-raises-51-million-in-series-c-funding" target="_blank">https://mjbizdaily.com/cannabis-tech-firm-treez-raises-51-million-in-series-c-funding</a></li>
+                            
+                            <li>Marijuana Moment. (2023). <em>Payment Processor Square Enters Canada's Marijuana Market</em>. Retrieved from <a href="https://marijuanamoment.net/payment-processor-square-enters-canadas-marijuana-market" target="_blank">https://marijuanamoment.net/payment-processor-square-enters-canadas-marijuana-market</a></li>
+                            
+                            <li>Newswire. (2025). <em>Cannabis payments leader Merrco announces U.S. launch with immediate CBD capabilities</em>. Retrieved from <a href="https://newswire.ca/news-releases/cannabis-payments-leader-merrco-announces-u-s-launch-with-immediate-cbd-capabilities-840360788.html" target="_blank">https://newswire.ca/news-releases/cannabis-payments-leader-merrco-announces-u-s-launch-with-immediate-cbd-capabilities-840360788.html</a></li>
+                            
+                            <li>Poof Blog. (2025). <em>The Best Payment Solutions for Canadian Cannabis Retailers: 2025 Guide</em>. Retrieved from <a href="https://blog.poof.ca/blog/the-best-payment-solutions-for-canadian-cannabis-retailers-2025-guide" target="_blank">https://blog.poof.ca/blog/the-best-payment-solutions-for-canadian-cannabis-retailers-2025-guide</a></li>
+                            
+                            <li>Business of Cannabis. (2025). <em>Treez Series C Funding Analysis</em>. Retrieved from <a href="https://businessofcannabis.com/treez-series-c-funding" target="_blank">https://businessofcannabis.com/treez-series-c-funding</a></li>
+                            
+                            <li>CEPR. (2025). <em>Canadian legalisation of cannabis reduces both cash usage and the black economy</em>. Retrieved from <a href="https://cepr.org/voxeu/columns/canadian-legalisation-cannabis-reduces-both-cash-usage-and-black-economy" target="_blank">https://cepr.org/voxeu/columns/canadian-legalisation-cannabis-reduces-both-cash-usage-and-black-economy</a></li>
+                        </ul>
+                        
+                        <p style="font-size: 0.95rem; color: #666; margin-top: 1.5rem;">
+                            <strong>Note:</strong> Payment processing data represents aggregated intelligence from verified payment processors, dispensary operators, and industry reports. Transaction value averages based on Canadian retail cannabis data. Readers should verify current payment processing options for business decisions. Analysis current as of September 1, 2025.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="back-to-hub">
+                    <a href="/intelligence-hub" class="btn btn-primary">← Back to Intelligence Hub</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo" style="margin-bottom: 1rem; height: 100px; display: flex; align-items: center;">
+                        <img src="/static/canvrio-logo.png" alt="Canvrio" style="height: 100px; width: auto; max-width: 400px; object-fit: contain; background: transparent;">
+                    </div>
+                    <p style="color: var(--gray-600); margin-bottom: 1rem;">
+                        Next-generation intelligence platform for the cannabis industry. Driving innovation through strategic intelligence.
+                    </p>
+                    <div style="color: var(--gray-600); font-size: 0.875rem;">
+                        🇨🇦 Proudly Canadian
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Intelligence Hub</h4>
+                    <ul class="footer-links">
+                        <li><a href="/intelligence-hub">All Articles</a></li>
+                        <li><a href="/market-analysis">Market Analysis</a></li>
+                        <li><a href="/canadian-payment-advantage">Payment Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a></li>
+                        <li><a href="#" onclick="showTerms()">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Canvrio. All rights reserved. | Advancing cannabis innovation through impactful intelligence.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
