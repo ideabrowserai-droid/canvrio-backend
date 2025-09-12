@@ -1,0 +1,15 @@
+timestamp,analysis_type,chain_name,url,score,locations,urgency,project_value,expected_value,close_probability,age_gate,health_warnings,license_display,provinces,ecommerce_risk,priority
+2025-08-17T08:55:28.837383,CHAIN,Canna Cabana,https://cannacabana.com,100,90,LOW,3000.0,2400.0,0.2,False,False,False,"AB, ON, BC",,1
+2025-08-17T08:55:28.837426,CHAIN,Value Buds,https://valuebuds.com,94,68,LOW,3000.0,2400.0,0.2,False,False,False,"AB, BC",,1
+2025-08-17T08:55:28.837442,CHAIN,PlantLife Cannabis,https://plantlifecannabis.com,100,39,LOW,2600.0,2080.0,0.2,False,False,False,AB,,2
+2025-08-17T08:55:28.837454,CHAIN,Fire & Flower,https://fireandflower.com,100,27,LOW,2600.0,2080.0,0.2,False,False,False,"AB, ON, BC",,1
+2025-08-17T08:55:28.837465,CHAIN,Spiritleaf,https://spiritleaf.ca,100,23,LOW,2600.0,2080.0,0.2,False,False,False,"AB, ON, BC",,1
+2025-08-17T08:55:28.837475,CHAIN,The Hunny Pot,https://thehunnypot.com,58,15,CRITICAL,2000.0,6400.0,0.8,False,False,False,ON,,2
+2025-08-17T08:55:28.837488,CHAIN,Nova Cannabis,https://novacannabis.ca,53,10,CRITICAL,2000.0,6400.0,0.8,False,False,False,AB,,3
+2025-08-17T08:55:28.837500,ONLINE_RETAILER,,https://ocs.ca,100,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837509,ONLINE_RETAILER,,https://bccannabisstores.com,100,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837518,ONLINE_RETAILER,,https://albertacannabis.org,100,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837526,ONLINE_RETAILER,,https://budderweeds.com,100,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837534,ONLINE_RETAILER,,https://cannabisexpress.ca,92,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837543,ONLINE_RETAILER,,https://greensociety.ca,100,1,UNKNOWN,0,0,0,False,False,False,,LOW,0
+2025-08-17T08:55:28.837551,ONLINE_RETAILER,,https://chronicstore.ca,27,1,UNKNOWN,0,0,0,False,False,False,,HIGH,0
