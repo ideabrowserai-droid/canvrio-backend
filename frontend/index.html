@@ -3092,7 +3092,7 @@ Be among the first cannabis industry professionals to access actionable business
 
                 console.log('📡 Loading live cannabis industry content...');
 
-                const response = await fetch(`${API_BASE_URL}/api/content/banner-preview`);
+                const response = await fetch(`${API_BASE_URL}/api/content/latest?limit=5`);
 
                 
 
@@ -3108,11 +3108,11 @@ Be among the first cannabis industry professionals to access actionable business
 
                 
 
-                if (data.success && data.banner_content.length > 0) {
+                if (data.success && data.content.length > 0) {
 
-                    updateBannerWithLiveContent(data.banner_content);
+                    updateBannerWithLiveContent(data.content);
 
-                    console.log(`✅ Loaded ${data.banner_content.length} live content items`);
+                    console.log(`✅ Loaded ${data.content.length} live content items`);
 
                     return true;
 
