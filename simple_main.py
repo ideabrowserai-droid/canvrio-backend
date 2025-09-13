@@ -202,7 +202,7 @@ def init_database():
 
 def init_content_database():
     """Initialize SQLite database for aggregated content with enhanced schema"""
-    db_path = 'database/content.db'
+    db_path = 'content.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
@@ -263,7 +263,7 @@ class ContentAggregator:
     """Clean, single-purpose content aggregator for cannabis industry intelligence"""
     
     def __init__(self):
-        self.db_path = 'database/content.db'
+        self.db_path = 'content.db'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
