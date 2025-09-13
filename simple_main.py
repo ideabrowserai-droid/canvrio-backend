@@ -736,7 +736,7 @@ async def serve_html_files(filename: str):
 @app.get("/curator")
 async def serve_curator_interface(username: str = Depends(get_curator_credentials)):
     """Serves the integrated content curation HTML page (password protected)."""
-    return FileResponse("frontend-deploy/curator.html")
+    return FileResponse("frontend/pages/curator.html")
 
 # --- Blog Admin Interface Endpoint ---
 @app.get("/blog-admin")
